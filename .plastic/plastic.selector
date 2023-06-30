@@ -1,0 +1,4 @@
+repository "RedemptionofRuins@wechat_os_qy05dyovzofmqeg4ybij9i5xm@cloud.cn"
+  path "/"
+    br "/main"
+    co "/main"
