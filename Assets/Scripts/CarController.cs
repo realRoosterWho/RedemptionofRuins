@@ -8,7 +8,7 @@ public class CarController : MonoBehaviour
 {
     // Start is called before the first frame update
     
-    //生成汽车的移动速度、旋转速度和最大速度，现在加上摩擦力质量因子
+    //汽车的参数
     public float speed = 10.0f; //移动速度
     public float rotationSpeed  = 100.0f; //旋转速度
     public float maxSpeed = 20.0f; //最大速度
@@ -16,8 +16,16 @@ public class CarController : MonoBehaviour
     public float frictionCoefficient  = 0.05f; //摩擦力系数
     public float rotationCoefficient = 10; //旋转系数，用来调整旋转速度和汽车速度的关系
     public float sideFrictionCoefficient = 0.05f; //侧向摩擦力系数
-
+    private float moveVertical;
+    private float moveHorizontal;
     
+    
+    //汽车的行为状态变量
+    public bool isBeingEntered = false; //是否正在被玩家控制
+    public bool isWithBucket = false; //是否有水桶
+    
+    
+
     //汽车的刚体组件
     private Rigidbody2D rb;
     
@@ -30,11 +38,30 @@ public class CarController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        //Read the User Input
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
+
+        //Update the car's parameters according to the status
         
-        //汽车的速度越大，旋转速度越大；速度为零时，旋转速度为零
+        
+        //如果玩家在车上，那么读取玩家的输入
+        if (isBeingEntered)
+        {
+            //读取玩家的输入
+            float moveHorizontal = Input.GetAxis("Horizontal");
+            float moveVertical = Input.GetAxis("Vertical");
+
+            //汽车的速度越大，旋转速度越大；速度为零时，旋转速度为零
+            }
+        else
+        {
+            //如果玩家不在车上，那么汽车的速度和旋转速度都为零
+            rotationSpeed = 0;
+            rb.velocity = Vector2.zero;
+            rb.angularVelocity = 0;
+        }
+        
+        //打印beignEntered的状态
+        //Debug.Log("isBeingEntered: " + isBeingEntered);
+        
         //这个比值需要可以调整，现在是10
         rotationSpeed = rb.velocity.magnitude * rotationCoefficient;
         if (rb.velocity.magnitude == 0)
