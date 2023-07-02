@@ -2,15 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 //todo 模拟真实环境，让汽车的旋转速度和速度有关
+//todo 减少汽车漂移
+
 public class CarController : MonoBehaviour
 {
     // Start is called before the first frame update
     
     //生成汽车的移动速度、旋转速度和最大速度，现在加上摩擦力质量因子
-    public float speed = 10.0f;
-    public float rotationSpeed  = 100.0f;
-    public float maxSpeed = 20.0f;
-    public float frictionCoefficient  = 0.05f;
+    public float speed = 10.0f; //移动速度
+    public float rotationSpeed  = 100.0f; //旋转速度
+    public float maxSpeed = 20.0f; //最大速度
+    public float maxRotationSpeed = 30.0f; //最大旋转速度
+    public float frictionCoefficient  = 0.05f; //摩擦力系数
+    public float rotationCoefficient = 10; //旋转系数，用来调整旋转速度和汽车速度的关系
+    public float sideFrictionCoefficient = 0.05f; //侧向摩擦力系数
+
     
     //汽车的刚体组件
     private Rigidbody2D rb;
@@ -28,6 +34,30 @@ public class CarController : MonoBehaviour
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
         
+        //汽车的速度越大，旋转速度越大；速度为零时，旋转速度为零
+        //这个比值需要可以调整，现在是10
+        rotationSpeed = rb.velocity.magnitude * rotationCoefficient;
+        if (rb.velocity.magnitude == 0)
+        {
+            rotationSpeed = 0;
+        }
+        
+        //Max rotation angle
+        //汽车的旋转速度不能超过最大旋转速度maxRotationSpeed
+        if (rotationSpeed > maxRotationSpeed)
+        {
+            rotationSpeed = maxRotationSpeed;
+        }
+        //用侧向摩擦力来减少汽车的漂移
+//todo 侧向摩擦力的大小和汽车的速度有关
+        //计算侧向摩擦力的大小
+        float sideFrictionMagnitude = sideFrictionCoefficient * rb.mass;
+        //计算侧向摩擦力的方向
+        Vector2 sideFriction = -sideFrictionMagnitude * rb.velocity.normalized;
+        //应用侧向摩擦力
+        rb.AddForce(sideFriction);
+        
+
         //计算汽车新的速度和方向,写代码并注释
         Vector2 speed = transform.up * moveVertical * this.speed;
         float direction = -moveHorizontal * rotationSpeed;
@@ -49,7 +79,5 @@ public class CarController : MonoBehaviour
             Vector2 friction = -frictionMagnitude * rb.velocity.normalized;
             rb.AddForce(friction);
         }
-
-        
     }
 }
