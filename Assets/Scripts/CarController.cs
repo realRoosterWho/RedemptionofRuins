@@ -43,7 +43,7 @@ public class CarController : MonoBehaviour
         
         
         //如果玩家在车上，那么读取玩家的输入
-        if (isBeingEntered)
+        if (true)
         {
             //读取玩家的输入
             float moveHorizontal = Input.GetAxis("Horizontal");

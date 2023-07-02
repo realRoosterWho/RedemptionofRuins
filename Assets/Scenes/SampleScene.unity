@@ -152,7 +152,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 194044009}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: da91a81807c82d94aa43d9d0884beea3, type: 3}
   m_Name: 
@@ -319,6 +319,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   rotationSpeed: 100
+  rotationCoefficient: 20
+  maxSpeed: 8
+  maxRotationSpeed: 60
 --- !u!114 &194044016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -331,11 +334,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 757cfe30a7a89d24aabdfc85e683f045, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 20
-  maxRotationSpeed: 30
-  frictionCoefficient: 0.05
-  rotationCoefficient: 10
-  sideFrictionCoefficient: 0.05
+  maxSpeed: 8
+  frictionCoefficient: 1.5
+  sideFrictionCoefficient: 5
 --- !u!1 &399247595
 GameObject:
   m_ObjectHideFlags: 0
