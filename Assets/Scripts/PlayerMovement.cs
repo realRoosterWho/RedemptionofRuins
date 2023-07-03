@@ -9,8 +9,12 @@ public class PlayerMovement : MonoBehaviour
 {
     public float speed = 5.0f; // 玩家移动的速度
     public float interactRadius = 1.5f; // 玩家可以与之交互的桶的最大距离
+    
     public float bucketMass = 0f; // 水桶的质量
-    public static float playerMass = 2f; // 玩家的质量
+    public float playerMass = 2f; // 玩家的质量
+    // 设置布尔值：玩家是否获得桶
+    public bool hasBucket = false;
+    
     
     public float hasBucketTime = 0f; // 玩家拥有水桶的时间
     
@@ -18,8 +22,7 @@ public class PlayerMovement : MonoBehaviour
     public GameObject emptyBucketPrefab;
 
 
-    // 设置布尔值：玩家是否获得桶
-    public bool hasBucket = false;
+
 
     private void Start()
     {

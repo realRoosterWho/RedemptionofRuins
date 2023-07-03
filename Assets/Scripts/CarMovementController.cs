@@ -19,6 +19,10 @@ public class CarMovementController : MonoBehaviour
     public float rotationCoefficient = 10;
     public bool isPlayerInCar = true;
     public float maxRotationSpeed = 30.0f;
+    
+    public float bucketMass = 0f; // 水桶的质量
+    public float playerMass = 2f; // 玩家的质量
+    public bool hasBucket = false; // 是否拿着水桶
 
     private Rigidbody2D rb;
 
@@ -68,6 +72,16 @@ public class CarMovementController : MonoBehaviour
     {
         Debug.Log("Player Enter Car by CarMovementController");
         isPlayerInCar = true;
+        
+        //存储玩家的质量、是否携带桶、桶质量
+        playerMass = player.GetComponent<PlayerMovement>().playerMass;
+        hasBucket = player.GetComponent<PlayerMovement>().hasBucket;
+        bucketMass = player.GetComponent<PlayerMovement>().bucketMass;
+        
+        // Debug 记录汽车存储的玩家质量
+        Debug.Log("Player Mass: " + playerMass);
+        Debug.Log("Has Bucket: " + hasBucket);
+        Debug.Log("Bucket Mass: " + bucketMass);
 
         Destroy(player);
 
@@ -78,17 +92,20 @@ public class CarMovementController : MonoBehaviour
         Debug.Log("Player Exit Car by CarMovementController");
         isPlayerInCar = false;
         // 玩家离开汽车时，生成Player并恢复Player的状态，生成Player，位置在车辆旁边
-        player = Instantiate(playerPrefab, transform.position + transform.up * 2, Quaternion.identity); 
-        
+        player = Instantiate(playerPrefab, transform.position + transform.right * -1, Quaternion.identity);
+
+        // 恢复玩家的质量、是否携带桶、桶质量
+        player.GetComponent<PlayerMovement>().playerMass = playerMass;
+        player.GetComponent<PlayerMovement>().hasBucket = hasBucket;
+        player.GetComponent<PlayerMovement>().bucketMass = bucketMass;
 
 
-        //Unsubscribe from events
-         void OnDisable()
-        {
-            EventManager.OnPlayerEnterCar -= onPlayerEnterCar;
-            EventManager.OnPlayerExitCar -= onPlayerExitCar;
-        }
-         
-         
+
+    }
+    
+    void OnDisable()
+    {
+        EventManager.OnPlayerEnterCar -= onPlayerEnterCar;
+        EventManager.OnPlayerExitCar -= onPlayerExitCar;
     }
 }

@@ -86,12 +86,13 @@ public class EventManager : MonoBehaviour
             }
     
             // 玩家丢桶事件：如果玩家按下了Space，且玩家在拿了桶后超过一秒钟，那么触发玩家丢桶事件
-            if (Input.GetKeyDown(KeyCode.Space) && playerMovement.hasBucket && (playerMovement.hasBucketTime > 1.0f))
+            if (Input.GetKeyDown(KeyCode.Space) && playerMovement.hasBucket && (playerMovement.hasBucketTime > 1.0f) && !isPlayerNearCar && !cannotDropBucket)
             {
                 Debug.Log("Player is trying to drop the bucket");
                 OnPlayerDropBucket?.Invoke();
             }
-
+            
+            
         }
         
         //玩家上车事件：如果玩家按下了Space，且玩家靠近车辆，且玩家没有在车上，那么触发玩家上车事件
@@ -163,12 +164,16 @@ public class EventManager : MonoBehaviour
             {
                 //log
                 //Debug.Log("Player is near the car");
+                
+                this.cannotDropBucket = true;
                 return true;
             }
             else
             {
                 //log
                 //Debug.Log("Player is not near the car");
+                
+                this.cannotDropBucket = false;
                 return false;
             }
         }
@@ -178,29 +183,28 @@ public class EventManager : MonoBehaviour
         {
             //寻找最近的桶
             GameObject nearestBucket = FindNearestBucket();
-            
+    
             //如果没有玩家，那么玩家不靠近桶
             if (GameObject.FindWithTag("Player") == null)
             {
+                this.cannotEnterCar = false;
                 return false;
             }
-            
+    
             //如果没有桶，那么玩家不靠近桶
             if (nearestBucket == null)
             {
+                this.cannotEnterCar = false;
                 return false;
             }
-            
+    
             //获取玩家的位置
             Vector3 playerPosition = GameObject.FindWithTag("Player").transform.position;
             //获取桶的位置
             Vector3 bucketPosition = nearestBucket.transform.position;
             //计算玩家和桶的距离
             float distance = Vector3.Distance(playerPosition, bucketPosition);
-            
-            //打印玩家和桶的距离
-            //Debug.Log("The distance between player and bucket is " + distance);
-            
+    
             //如果玩家和桶的距离小于1.5，那么玩家靠近桶
             if (distance < 1.5)
             {
@@ -213,9 +217,11 @@ public class EventManager : MonoBehaviour
             {
                 //log
                 //Debug.Log("Player is not near the bucket");
+                this.cannotEnterCar = false;
                 return false;
             }
         }
+
         
 
         //检查玩家是否靠近加油站
