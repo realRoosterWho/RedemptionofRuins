@@ -33,6 +33,9 @@ public class EventManager : MonoBehaviour
     
     //定义汽车太重了事件
     public static event Action OnCarTooHeavy;
+    
+    //一堵墙被破坏事件
+    public static event Action OnWallDestroyed;
 
 
 
@@ -136,6 +139,12 @@ public class EventManager : MonoBehaviour
     {
         Debug.Log("Car is too heavy");
         OnCarTooHeavy?.Invoke();
+    }
+    
+    public static void InvokeOnWallDestroyed()
+    {
+        Debug.Log("A wall is destroyed");
+        OnWallDestroyed?.Invoke();
     }
 
 
