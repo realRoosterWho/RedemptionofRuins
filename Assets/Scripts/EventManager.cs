@@ -30,6 +30,9 @@ public class EventManager : MonoBehaviour
     
     //定义汽车燃料用尽事件
     public static event Action OnCarOutOfGas;
+    
+    //定义汽车太重了事件
+    public static event Action OnCarTooHeavy;
 
 
 
@@ -129,7 +132,14 @@ public class EventManager : MonoBehaviour
         OnCarOutOfGas?.Invoke();
     }
 
-        // 检查玩家是否在车上
+    public static void InvokeOnCarTooHeavy()
+    {
+        Debug.Log("Car is too heavy");
+        OnCarTooHeavy?.Invoke();
+    }
+
+
+    // 检查玩家是否在车上
         bool PlayerInCar()
         {
             //Debug.Log("Checking if player is in the car");

@@ -304,8 +304,9 @@ MonoBehaviour:
   maxRotationSpeed: 60
   bucketMass: 0
   playerMass: 2
-  hasBucket: 0
-  gasMass: 2
+  hasBucket: 1
+  carGas: 5
+  gasMass: 0
   carMass: 8
   emptyBucketMass: 1
 --- !u!114 &194044016
@@ -1154,7 +1155,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.120149136, y: 0.060074806}
+  m_Offset: {x: 0.120149136, y: 36.394768}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1165,7 +1166,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 13.255195, y: 9.2902775}
+  m_Size: {x: 13.255195, y: 81.95967}
   m_EdgeRadius: 0
 --- !u!4 &2060358158
 Transform:

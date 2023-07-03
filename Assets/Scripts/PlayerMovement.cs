@@ -154,6 +154,10 @@ public class PlayerMovement : MonoBehaviour
                         canAddGas = false;
                     }
                     }
+                else
+                {
+                    canAddGas = false; //如果距离大于交互半径，玩家不可加油
+                }
                 }
             }
         //记录玩家处于isAddingGas的时间，也就是记录addGas的时间
