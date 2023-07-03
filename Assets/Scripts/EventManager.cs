@@ -27,6 +27,9 @@ public class EventManager : MonoBehaviour
     
     //检查玩家是否靠近加油站
     public static event Action OnPlayerNearGasStation;
+    
+    //定义汽车燃料用尽事件
+    public static event Action OnCarOutOfGas;
 
 
 
@@ -73,6 +76,7 @@ public class EventManager : MonoBehaviour
             OnPlayerNearBucket?.Invoke();
         }
         
+        
         // 在EventManager里：
         // 如果玩家为空，那么不获取playerMovement
         if (GameObject.FindWithTag("Player") != null)
@@ -118,8 +122,13 @@ public class EventManager : MonoBehaviour
         }
 
     }
-    
-    
+
+    public static void InvokeOnCarOutOfGas()
+    {
+        Debug.Log("Car is out of gas");
+        OnCarOutOfGas?.Invoke();
+    }
+
         // 检查玩家是否在车上
         bool PlayerInCar()
         {
@@ -311,4 +320,6 @@ public class EventManager : MonoBehaviour
             //返回最近的桶
             return nearestBucket;
         }
+        
+
 }

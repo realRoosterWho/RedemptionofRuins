@@ -134,7 +134,6 @@ GameObject:
   - component: {fileID: 194044013}
   - component: {fileID: 194044012}
   - component: {fileID: 194044011}
-  - component: {fileID: 194044010}
   - component: {fileID: 194044014}
   - component: {fileID: 194044016}
   - component: {fileID: 194044015}
@@ -145,27 +144,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &194044010
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 194044009}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da91a81807c82d94aa43d9d0884beea3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 15
-  rotationSpeed: 100
-  maxSpeed: 8
-  maxRotationSpeed: 60
-  frictionCoefficient: 1.5
-  rotationCoefficient: 20
-  sideFrictionCoefficient: 5
-  isBeingEntered: 0
-  isWithBucket: 0
 --- !u!50 &194044011
 Rigidbody2D:
   serializedVersion: 4
@@ -318,11 +296,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 1269788059977548966, guid: efa3c1c3a7631b04b9dbe021698f131b, type: 3}
+  maxSpeed: 20
   speed: 150
   rotationSpeed: 100
   rotationCoefficient: 20
   isPlayerInCar: 1
   maxRotationSpeed: 60
+  bucketMass: 0
+  playerMass: 2
+  hasBucket: 0
+  gasMass: 0
+  emptyBucketMass: 0
 --- !u!114 &194044016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -335,7 +319,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 757cfe30a7a89d24aabdfc85e683f045, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 8
   frictionCoefficient: 1.5
   sideFrictionCoefficient: 5
 --- !u!1 &399247595
@@ -1011,6 +994,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b45d962ca226d5649afca3c54403b274, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  emptyBucketMass: 1
+  gasMass: 7
   bucketMass: 8
   bucketNumber: 0
 --- !u!50 &1915500246

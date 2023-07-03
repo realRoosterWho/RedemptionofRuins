@@ -14,6 +14,7 @@ public class CarMovementController : MonoBehaviour
     public GameObject playerPrefab; // Player的预制体
     private GameObject player; // 当前的Player实例
 
+    public float maxSpeed = 20.0f;
     public float speed = 10.0f;
     public float rotationSpeed = 100.0f;
     public float rotationCoefficient = 10;
@@ -23,6 +24,8 @@ public class CarMovementController : MonoBehaviour
     public float bucketMass = 0f; // 水桶的质量
     public float playerMass = 2f; // 玩家的质量
     public bool hasBucket = false; // 是否拿着水桶
+    public float gasMass = 0.0f;
+    public float emptyBucketMass = 0.0f;
 
     private Rigidbody2D rb;
 
@@ -35,6 +38,9 @@ public class CarMovementController : MonoBehaviour
 
     void FixedUpdate()
     {
+        
+        bucketMass = emptyBucketMass + gasMass;
+
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
 
@@ -44,7 +50,15 @@ public class CarMovementController : MonoBehaviour
             moveVertical = 0;
         }
 
-
+        // 汽车的刚体质量越大，最大速度越小
+        maxSpeed = 90f / rb.mass;
+        // 控制旋转速度
+        float currentSpeed = rb.velocity.magnitude;
+        // 控制最大速度
+        if (currentSpeed > maxSpeed)
+        {
+            rb.velocity = rb.velocity.normalized * maxSpeed;
+        }
 
         //这个比值需要可以调整，现在是10
         rotationSpeed = rb.velocity.magnitude * rotationCoefficient;
@@ -77,6 +91,8 @@ public class CarMovementController : MonoBehaviour
         playerMass = player.GetComponent<PlayerMovement>().playerMass;
         hasBucket = player.GetComponent<PlayerMovement>().hasBucket;
         bucketMass = player.GetComponent<PlayerMovement>().bucketMass;
+        emptyBucketMass = player.GetComponent<PlayerMovement>().emptyBucketMass;
+        gasMass = player.GetComponent<PlayerMovement>().gasMass;
         
         // Debug 记录汽车存储的玩家质量
         Debug.Log("Player Mass: " + playerMass);
@@ -94,10 +110,12 @@ public class CarMovementController : MonoBehaviour
         // 玩家离开汽车时，生成Player并恢复Player的状态，生成Player，位置在车辆旁边
         player = Instantiate(playerPrefab, transform.position + transform.right * -1, Quaternion.identity);
 
-        // 恢复玩家的质量、是否携带桶、桶质量
+        // 恢复玩家的质量、是否携带桶、桶质量、汽油质量、空桶质量
         player.GetComponent<PlayerMovement>().playerMass = playerMass;
         player.GetComponent<PlayerMovement>().hasBucket = hasBucket;
         player.GetComponent<PlayerMovement>().bucketMass = bucketMass;
+        player.GetComponent<PlayerMovement>().gasMass = gasMass;
+        player.GetComponent<PlayerMovement>().emptyBucketMass = emptyBucketMass;
 
 
 

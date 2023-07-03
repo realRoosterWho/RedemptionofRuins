@@ -12,6 +12,9 @@ public class PlayerMovement : MonoBehaviour
     
     public float bucketMass = 0f; // 水桶的质量
     public float playerMass = 2f; // 玩家的质量
+    public float emptyBucketMass = 0.0f;
+    public float gasMass = 0.0f;
+    
     // 设置布尔值：玩家是否获得桶
     public bool hasBucket = false;
     
@@ -49,6 +52,19 @@ public class PlayerMovement : MonoBehaviour
     // 用于每一帧的更新
     void Update()
     {
+        
+        bucketMass = emptyBucketMass + gasMass;
+
+        // 玩家移动的速度和水桶质量有关，如果玩家携带水桶
+        if (hasBucket)
+        {
+            speed = 5f / (bucketMass/2 + playerMass); 
+        }
+        else
+        {
+            speed = 5f;
+        }
+
         // 读取玩家的键盘输入
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
@@ -150,14 +166,17 @@ public class PlayerMovement : MonoBehaviour
         // 对最近的桶进行操作
         Debug.Log("The closest bucket is " + closestBucket.name);
         
-        // 记录最近的桶的bucketMass
+        // 记录最近的桶的bucketMass以及gasMass和emptyMass
         BucketStatus bucketStatus = closestBucket.GetComponent<BucketStatus>();
         this.bucketMass = bucketStatus.bucketMass;
-        Debug.Log("The mass of the closest bucket is " + bucketMass);
+        this.emptyBucketMass = bucketStatus.emptyBucketMass;
+        this.gasMass = bucketStatus.gasMass;
         
-        // 记录玩家的质量（为玩家的质量加上最近的桶的质量）
-        playerMass += bucketMass;
-        Debug.Log("The mass of the player is " + playerMass);
+        // 更新玩家质量
+        playerMass = bucketMass;
+        
+        
+        Debug.Log("The mass of the closest bucket is " + bucketMass);
         
         
         
@@ -177,10 +196,30 @@ public class PlayerMovement : MonoBehaviour
         
         // 设置新生成的桶的质量
         bucket.GetComponent<BucketStatus>().bucketMass = bucketMass;
+        bucket.GetComponent<BucketStatus>().gasMass = gasMass;
+        bucket.GetComponent<BucketStatus>().emptyBucketMass = emptyBucketMass;
 
-        // 设置桶的位置,桶生成在玩家左侧
-        bucket.transform.position = transform.position + new Vector3(-1, 0, 0);
-
+        // 设置桶的位置,桶生成在玩家移动方向的相反的一侧
+        switch (currentState)
+        {
+            case MovementState.Up:
+                bucket.transform.position = transform.position + new Vector3(0, -1, 0);
+                break;
+            case MovementState.Down:
+                bucket.transform.position = transform.position + new Vector3(0, 1, 0);
+                break;
+            case MovementState.Left:
+                bucket.transform.position = transform.position + new Vector3(1, 0, 0);
+                break;
+            case MovementState.Right:
+                bucket.transform.position = transform.position + new Vector3(-1, 0, 0);
+                break;
+            case MovementState.Idle:
+                bucket.transform.position = transform.position + new Vector3(0, 1, 0);
+                break;
+        }
+        
+        
         // 设置桶的质量
         bucket.GetComponent<Rigidbody2D>().mass = bucketMass;
         
@@ -190,9 +229,6 @@ public class PlayerMovement : MonoBehaviour
         // 设置桶的质量
         bucket.GetComponent<BucketStatus>().bucketMass = bucketMass;
         
-        // 减少玩家的质量
-        playerMass -= bucketMass;
-
     }
     
     // 取消订阅事件
