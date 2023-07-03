@@ -25,6 +25,7 @@ public class CarMovementController : MonoBehaviour
     public float playerMass = 2f; // 玩家的质量
     public bool hasBucket = false; // 是否拿着水桶
     public float gasMass = 0.0f;
+    public float carMass = 8.00f;
     public float emptyBucketMass = 0.0f;
 
     private Rigidbody2D rb;
@@ -38,17 +39,36 @@ public class CarMovementController : MonoBehaviour
 
     void FixedUpdate()
     {
+        // 如果玩家在车内，那么车的燃料在不断减少
+        if (isPlayerInCar == true)
+        {
+            gasMass -= 0.005f;
+        }
+
+        // 如果燃料耗尽，那么触发事件
+        if (gasMass <= 0)
+        {
+            //锁死燃料到0
+            gasMass = 0;
+            
+            EventManager.InvokeOnCarOutOfGas();
+        }
         
         bucketMass = emptyBucketMass + gasMass;
-
+        rb.mass = bucketMass + playerMass + carMass;
+        
+        //如果燃料耗尽，汽车不可以移动，汽车不接受输入；不然就可以移动，汽车接受输入；
+        //如果燃料耗尽，汽车可以移动；否则，汽车不接受输入
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
 
-        if (isPlayerInCar == false)
+
+        if (isPlayerInCar == false || gasMass <= 0)
         {
             moveHorizontal = 0;
             moveVertical = 0;
         }
+
 
         // 汽车的刚体质量越大，最大速度越小
         maxSpeed = 90f / rb.mass;
@@ -84,6 +104,14 @@ public class CarMovementController : MonoBehaviour
 
     private void onPlayerEnterCar()
     {
+        // 如果玩家在加油，玩家不能上车
+        if (player.GetComponent<PlayerMovement>().isAddingGas == true)
+        {
+            return;
+        }
+        
+        
+        
         Debug.Log("Player Enter Car by CarMovementController");
         isPlayerInCar = true;
         

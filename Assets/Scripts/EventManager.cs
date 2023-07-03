@@ -232,49 +232,6 @@ public class EventManager : MonoBehaviour
         }
 
         
-
-        //检查玩家是否靠近加油站
-        bool PlayerNearGasStation()
-        {
-            //如果没有玩家，那么玩家不靠近加油站
-            if (GameObject.FindWithTag("Player") == null)
-            {
-                return false;
-            }
-
-            //如果没有加油站，那么玩家不靠近加油站
-            if (GameObject.FindWithTag("GasStation") == null)
-            {
-                return false;
-            }
-
-
-            //Debug.Log("Checking if player is near the gas station");
-            //获取玩家的位置
-            Vector3 playerPosition = GameObject.FindWithTag("Player").transform.position;
-            //获取加油站的位置
-            Vector3 gasStationPosition = GameObject.FindWithTag("GasStation").transform.position;
-            //计算玩家和加油站的距离
-            float distance = Vector3.Distance(playerPosition, gasStationPosition);
-
-            //打印玩家和加油站的距离
-            //Debug.Log("The distance between player and gas station is " + distance);
-
-            //如果玩家和加油站的距离小于1.5，那么玩家靠近加油站
-            if (distance < 1.5)
-            {
-                //log
-                Debug.Log("Player is near the gas station");
-                return true;
-            }
-            else
-            {
-                //log
-                //Debug.Log("Player is not near the gas station");
-                return false;
-            }
-        }
-        
         //找到最近的桶
         public static GameObject FindNearestBucket()
         {
@@ -321,5 +278,9 @@ public class EventManager : MonoBehaviour
             return nearestBucket;
         }
         
+        void InvokeNearGasStation()
+        {
+            OnPlayerNearGasStation?.Invoke();
+        }
 
 }

@@ -17,9 +17,12 @@ public class PlayerMovement : MonoBehaviour
     
     // 设置布尔值：玩家是否获得桶
     public bool hasBucket = false;
+    public bool isAddingGas = false;
+    public bool canAddGas = false;
     
     
     public float hasBucketTime = 0f; // 玩家拥有水桶的时间
+    public float addGasTime = 0f; // 玩家加油的时间
     
     //获取空桶的Prefab
     public GameObject emptyBucketPrefab;
@@ -58,7 +61,7 @@ public class PlayerMovement : MonoBehaviour
         // 玩家移动的速度和水桶质量有关，如果玩家携带水桶
         if (hasBucket)
         {
-            speed = 5f / (bucketMass/2 + playerMass); 
+            speed = 5f / (bucketMass/2 + 1); 
         }
         else
         {
@@ -68,6 +71,13 @@ public class PlayerMovement : MonoBehaviour
         // 读取玩家的键盘输入
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
+        
+        // 如果玩家正在加油，不移动
+        if (isAddingGas)
+        {
+            moveHorizontal = 0;
+            moveVertical = 0;
+        }
 
         // 创建一个表示移动方向的向量
         Vector3 movement = new Vector3(moveHorizontal, moveVertical, 0);
@@ -119,6 +129,80 @@ public class PlayerMovement : MonoBehaviour
             hasBucketTime = 0f;
         }
         
+        //检测玩家是否靠近加油站
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, interactRadius);
+        foreach (Collider2D collider in colliders)
+        {
+            // 如果碰撞器的标签是GasStation
+            if (collider.CompareTag("GasStation"))
+            {
+                // 计算玩家和加油站之间的距离
+                float distance = Vector3.Distance(transform.position, collider.transform.position);
+
+                // 如果距离小于交互半径
+                if (distance < interactRadius)
+                {
+                    // 如果玩家拥有桶
+                    if (hasBucket)
+                    {
+                        Debug.Log("Player can add gas");
+                        canAddGas = true;
+                    }
+                    // 如果玩家没有桶
+                    else
+                    {
+                        canAddGas = false;
+                    }
+                    }
+                }
+            }
+        //记录玩家处于isAddingGas的时间，也就是记录addGas的时间
+        if (isAddingGas)
+        {
+            addGasTime += Time.deltaTime;
+        }
+        else
+        {
+            addGasTime = 0f;
+        }
+        
+
+
+        //如果玩家可加油，且玩家按下E键，加油
+        //具体而言，每秒钟玩家的Gas的质量都增加，直到再次按下E键退出加油
+        if (canAddGas && Input.GetKeyDown(KeyCode.E) && (!isAddingGas))
+        {
+            Debug.Log("Player is adding gas");
+            isAddingGas = true;
+        }
+        // 如果玩家加油时间超过0.5秒钟且按下E键，并且处于加油状态，退出加油
+        if (addGasTime > 0.5f && Input.GetKeyDown(KeyCode.E) && isAddingGas)
+        {
+            Debug.Log("Player is not adding gas");
+            isAddingGas = false;
+        }
+        
+        
+        
+        // 如果状态是在加油，那么每秒钟玩家的Gas的质量都增加0.2f；但是如果加到上限了，就不能再加了，而且会自动退出加油状态
+        if (isAddingGas)
+        {
+            if (gasMass < 10.0f)
+            {
+                //每秒(Time)，增加0.2f
+                gasMass += 0.8f * Time.deltaTime;
+                
+            }
+            else
+            {
+                gasMass = 10.0f;
+                isAddingGas = false;
+            }
+        }
+        
+        
+
+
         //Log Timer
 //        Debug.Log(hasBucketTime);
         
@@ -172,10 +256,6 @@ public class PlayerMovement : MonoBehaviour
         this.emptyBucketMass = bucketStatus.emptyBucketMass;
         this.gasMass = bucketStatus.gasMass;
         
-        // 更新玩家质量
-        playerMass = bucketMass;
-        
-        
         Debug.Log("The mass of the closest bucket is " + bucketMass);
         
         
@@ -188,6 +268,13 @@ public class PlayerMovement : MonoBehaviour
     // 定义丢桶事件
     void onPlayerDropBucket()
     {
+        // 如果玩家在加油，玩家不能扔桶
+        if (isAddingGas)
+        {
+            return;
+        }
+
+
         hasBucket = false;
         Debug.Log("Player has dropped the bucket");
         

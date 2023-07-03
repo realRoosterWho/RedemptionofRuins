@@ -7,7 +7,6 @@ using UnityEngine;
 public class CarPhysicsController : MonoBehaviour
 {
     public float frictionCoefficient = 0.05f;
-
     public float sideFrictionCoefficient = 0.05f;
     private PlayerMovement playerMovement;
     
@@ -34,9 +33,6 @@ public class CarPhysicsController : MonoBehaviour
 
     void FixedUpdate()
     {
-        
-
-
         // 侧向摩擦力
         float sideFrictionMagnitude = sideFrictionCoefficient * rb.mass;
         Vector2 sideFrictionDirection = -sideFrictionMagnitude * rb.velocity.normalized;
