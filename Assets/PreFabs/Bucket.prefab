@@ -188,5 +188,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 757cfe30a7a89d24aabdfc85e683f045, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frictionCoefficient: 0.05
+  frictionCoefficient: 2
   sideFrictionCoefficient: 0.05
