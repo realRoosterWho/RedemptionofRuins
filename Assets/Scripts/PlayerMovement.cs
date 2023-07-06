@@ -27,6 +27,15 @@ public class PlayerMovement : MonoBehaviour
     //获取空桶的Prefab
     public GameObject emptyBucketPrefab;
 
+    public int health = 100;
+    public void TakeDamage(int damage) {
+        health -= damage;
+        if (health <= 0) {
+            //在GameController里面调用onGameOver
+            EventManager.TriggerEventGameOver();
+            
+        }
+    }
 
 
 
@@ -58,6 +67,12 @@ public class PlayerMovement : MonoBehaviour
         
         bucketMass = emptyBucketMass + gasMass;
 
+        if (health <= 0) {
+            //在GameController里面调用onGameOver
+            EventManager.TriggerEventGameOver();
+            
+        }
+        
         // 玩家移动的速度和水桶质量有关，如果玩家携带水桶
         if (hasBucket)
         {

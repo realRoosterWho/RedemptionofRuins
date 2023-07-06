@@ -36,6 +36,9 @@ public class EventManager : MonoBehaviour
     
     //一堵墙被破坏事件
     public static event Action OnWallDestroyed;
+    
+    //游戏结束事件
+    public static event Action OnGameOver;
 
 
 
@@ -145,6 +148,12 @@ public class EventManager : MonoBehaviour
     {
         Debug.Log("A wall is destroyed");
         OnWallDestroyed?.Invoke();
+    }
+    
+    public static void TriggerEventGameOver()
+    {
+        Debug.Log("Game Over");
+        OnGameOver?.Invoke();
     }
 
 

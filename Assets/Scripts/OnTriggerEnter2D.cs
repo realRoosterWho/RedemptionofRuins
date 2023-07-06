@@ -13,6 +13,7 @@ public class Teleporter : MonoBehaviour
         if(other.gameObject.tag == "Car")
         {
             //如果是，那么加载目标场景
+            SceneTracker.Instance.TrackScene();
             SceneManager.LoadScene(targetScene);
         }
     }
