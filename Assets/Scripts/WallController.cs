@@ -20,6 +20,8 @@ public class WallController : MonoBehaviour
     {
         var momentum = collision.relativeVelocity.magnitude * collision.rigidbody.mass;
         wallHealth -= momentum;
+        //触发InvokeOnWallHit
+        EventManager.InvokeOnWallHit();
         if (wallHealth <= 0)
         {
             DestroyWall();

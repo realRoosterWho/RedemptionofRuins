@@ -27,6 +27,7 @@ public class CarMovementController : MonoBehaviour
     public float gasMass = 0.0f;
     public float carMass = 8.00f;
     public float emptyBucketMass = 0.0f;
+    public float health = 100;
 
     private Rigidbody2D rb;
 
@@ -121,12 +122,13 @@ public class CarMovementController : MonoBehaviour
         Debug.Log("Player Enter Car by CarMovementController");
         isPlayerInCar = true;
         
-        //存储玩家的质量、是否携带桶、桶质量
+        //存储玩家的质量、是否携带桶、桶质量、生命值
         playerMass = player.GetComponent<PlayerMovement>().playerMass;
         hasBucket = player.GetComponent<PlayerMovement>().hasBucket;
         bucketMass = player.GetComponent<PlayerMovement>().bucketMass;
         emptyBucketMass = player.GetComponent<PlayerMovement>().emptyBucketMass;
         gasMass = player.GetComponent<PlayerMovement>().gasMass;
+        health = player.GetComponent<PlayerMovement>().health;
         
         //如果carGass + gasmass > 15, 那么carGass = 15, gasMass = carGass - 15;如果carGass >= 15, 那么carGass = 15, gasMass = gasMass;
         if (carGas + gasMass > 15)
@@ -170,6 +172,7 @@ public class CarMovementController : MonoBehaviour
         player.GetComponent<PlayerMovement>().bucketMass = bucketMass;
         player.GetComponent<PlayerMovement>().gasMass = gasMass;
         player.GetComponent<PlayerMovement>().emptyBucketMass = emptyBucketMass;
+        player.GetComponent<PlayerMovement>().health = health;
 
 
 

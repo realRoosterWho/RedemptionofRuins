@@ -27,8 +27,9 @@ public class PlayerMovement : MonoBehaviour
     //获取空桶的Prefab
     public GameObject emptyBucketPrefab;
 
-    public int health = 100;
-    public void TakeDamage(int damage) {
+    public float health = 100;
+    void onTakeDamage(float damage) {
+        Debug.Log("TakeDamage");
         health -= damage;
         if (health <= 0) {
             //在GameController里面调用onGameOver
@@ -45,6 +46,8 @@ public class PlayerMovement : MonoBehaviour
         EventManager.OnPlayerGetBucket += onPlayerGetBucket;
         // 定义丢桶事件
         EventManager.OnPlayerDropBucket += onPlayerDropBucket;
+        // 订阅玩家受伤
+        EventManager.OnPlayerAttacked += onTakeDamage;
         
     }
 
@@ -201,6 +204,11 @@ public class PlayerMovement : MonoBehaviour
             isAddingGas = false;
         }
         
+        // 如果玩家远离加油站，退出加油状态
+        if (!canAddGas)
+        {
+            isAddingGas = false;
+        }
         
         
         // 如果状态是在加油，那么每秒钟玩家的Gas的质量都增加0.2f；但是如果加到上限了，就不能再加了，而且会自动退出加油状态
@@ -342,5 +350,6 @@ public class PlayerMovement : MonoBehaviour
     {
         EventManager.OnPlayerGetBucket -= onPlayerGetBucket;
         EventManager.OnPlayerDropBucket -= onPlayerDropBucket;
+        EventManager.OnPlayerAttacked -= onTakeDamage;
     }
 }

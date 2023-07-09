@@ -62,6 +62,7 @@ public class CarPhysicsController : MonoBehaviour
         rb.mass -= GameObject.FindWithTag("Car").GetComponent<CarMovementController>().playerMass;
         rb.mass -= GameObject.FindWithTag("Car").GetComponent<CarMovementController>().bucketMass;
     }
+    
 
     //取消订阅
     void OnDestroy()

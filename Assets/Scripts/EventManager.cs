@@ -37,8 +37,14 @@ public class EventManager : MonoBehaviour
     //一堵墙被破坏事件
     public static event Action OnWallDestroyed;
     
+    //一堵墙被撞击事件
+    public static event Action OnWallHit;
+    
     //游戏结束事件
     public static event Action OnGameOver;
+    
+    //定义玩家被攻击事件
+    public static event Action<float> OnPlayerAttacked;
 
 
 
@@ -154,6 +160,18 @@ public class EventManager : MonoBehaviour
     {
         Debug.Log("Game Over");
         OnGameOver?.Invoke();
+    }
+    
+    public static void InvokeOnWallHit()
+    {
+        Debug.Log("A wall is hit");
+        OnWallHit?.Invoke();
+    }
+    
+    public static void InvokeOnPlayerAttacked(float damage)
+    {
+        Debug.Log("Player is attacked");
+        OnPlayerAttacked?.Invoke(damage);
     }
 
 
