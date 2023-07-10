@@ -2,11 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    
+    public Slider healthSlider;
     public float speed = 5.0f; // 玩家移动的速度
     public float interactRadius = 1.5f; // 玩家可以与之交互的桶的最大距离
     
@@ -28,13 +32,15 @@ public class PlayerMovement : MonoBehaviour
     public GameObject emptyBucketPrefab;
 
     public float health = 100;
-    void onTakeDamage(float damage) {
+    void onTakeDamage(float damage) 
+    {
         Debug.Log("TakeDamage");
         health -= damage;
-        if (health <= 0) {
+        healthSlider.value = health;  // 更新血条
+        if (health <= 0) 
+        {
             //在GameController里面调用onGameOver
-            EventManager.TriggerEventGameOver();
-            
+            EventManager.TriggerEventGameOver(); 
         }
     }
 
@@ -48,6 +54,9 @@ public class PlayerMovement : MonoBehaviour
         EventManager.OnPlayerDropBucket += onPlayerDropBucket;
         // 订阅玩家受伤
         EventManager.OnPlayerAttacked += onTakeDamage;
+        
+        healthSlider.maxValue = health;
+        healthSlider.value = health;
         
     }
 
@@ -67,8 +76,13 @@ public class PlayerMovement : MonoBehaviour
     // 用于每一帧的更新
     void Update()
     {
-        
+        healthSlider.value = health;  // 更新血条
         bucketMass = emptyBucketMass + gasMass;
+        
+        if (isAddingGas == true)
+        {
+            EventManager.InvokeAddingGas();
+        }
 
         if (health <= 0) {
             //在GameController里面调用onGameOver

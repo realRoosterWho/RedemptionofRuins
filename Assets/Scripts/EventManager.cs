@@ -45,6 +45,13 @@ public class EventManager : MonoBehaviour
     
     //定义玩家被攻击事件
     public static event Action<float> OnPlayerAttacked;
+    
+    // 定义信息触发
+    public static event Action<string> OnEventTriggered;
+    
+    // 定义日志被触发
+    public static event Action<string> OnLogTriggered;
+
 
 
 
@@ -102,6 +109,7 @@ public class EventManager : MonoBehaviour
             {
                 Debug.Log("Player is trying to get the bucket");
                 OnPlayerGetBucket?.Invoke();
+                OnLogTriggered?.Invoke("Get the bucket.");
             }
     
             // 玩家丢桶事件：如果玩家按下了Space，且玩家在拿了桶后超过一秒钟，那么触发玩家丢桶事件
@@ -109,6 +117,7 @@ public class EventManager : MonoBehaviour
             {
                 Debug.Log("Player is trying to drop the bucket");
                 OnPlayerDropBucket?.Invoke();
+                OnLogTriggered?.Invoke("Drop the bucket.");
             }
             
             
@@ -119,6 +128,7 @@ public class EventManager : MonoBehaviour
         {
             Debug.Log("Player is trying to enter the car");
             OnPlayerEnterCar?.Invoke();
+            OnLogTriggered?.Invoke("Enter the car.");
         }
 
         
@@ -127,6 +137,7 @@ public class EventManager : MonoBehaviour
         {
             Debug.Log("Player is trying to exit the car");
             OnPlayerExitCar?.Invoke();
+            OnLogTriggered?.Invoke("Exit the car.");
         }
         
         //检查玩家是否靠近车辆事件：如果玩家靠近车辆，那么触发检查玩家是否靠近车辆事件
@@ -142,18 +153,21 @@ public class EventManager : MonoBehaviour
     {
         Debug.Log("Car is out of gas");
         OnCarOutOfGas?.Invoke();
+        OnEventTriggered?.Invoke("Car is out of gas.");
     }
 
     public static void InvokeOnCarTooHeavy()
     {
         Debug.Log("Car is too heavy");
         OnCarTooHeavy?.Invoke();
+        OnEventTriggered?.Invoke("Car is too heavy.");
     }
     
     public static void InvokeOnWallDestroyed()
     {
         Debug.Log("A wall is destroyed");
         OnWallDestroyed?.Invoke();
+        OnLogTriggered?.Invoke("A wall is destroyed.");
     }
     
     public static void TriggerEventGameOver()
@@ -165,14 +179,17 @@ public class EventManager : MonoBehaviour
     public static void InvokeOnWallHit()
     {
         Debug.Log("A wall is hit");
-        OnWallHit?.Invoke();
+        OnWallHit?.Invoke(); 
+        OnLogTriggered?.Invoke("HIT");
     }
     
     public static void InvokeOnPlayerAttacked(float damage)
     {
         Debug.Log("Player is attacked");
         OnPlayerAttacked?.Invoke(damage);
+        OnLogTriggered?.Invoke("Player is attacked.");
     }
+
 
 
     // 检查玩家是否在车上
@@ -328,5 +345,11 @@ public class EventManager : MonoBehaviour
         {
             OnPlayerNearGasStation?.Invoke();
         }
+        
+        public static void InvokeAddingGas()
+        {
+            OnLogTriggered?.Invoke("Adding gas.");
+        }
+
 
 }
