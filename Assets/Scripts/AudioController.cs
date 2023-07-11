@@ -38,7 +38,8 @@ public class AudioController : MonoBehaviour
     // 播放第三段音频
     public void PlayAudio3()
     {
-        if (!audioSources[2].isPlaying)
+        //如果第二段音频不为空，那么停止播放；如果为空，那么不做任何事情
+        if (audioSources[2] != null)
         {
             audioSources[2].Play();
         }
@@ -47,10 +48,12 @@ public class AudioController : MonoBehaviour
     // 停止播放第三段音频
     public void PlayAudio4()
     {
-        if (audioSources[2].isPlaying)
+        //如果第二段音频不为空，那么停止播放；如果为空，那么不做任何事情
+        if (audioSources[2] != null)
         {
             audioSources[2].Stop();
         }
+
     }
     
     

@@ -195,6 +195,12 @@ public class PlayerMovement : MonoBehaviour
             hasBucketTime = 0f;
         }
         
+        //如果玩家有桶且玩家的桶的GasMass = 0，那么触发事件
+        if (hasBucket && gasMass == 0)
+        {
+            EventManager.InvokeOnEmptyBucket();
+        }
+        
         //检测玩家是否靠近加油站
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, interactRadius);
         foreach (Collider2D collider in colliders)

@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   emptyBucketMass: 1
-  gasMass: 4
+  gasMass: 0
   bucketMass: 5
   bucketNumber: 0
 --- !u!114 &1344839610301183437

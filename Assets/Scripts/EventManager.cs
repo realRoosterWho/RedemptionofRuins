@@ -40,6 +40,9 @@ public class EventManager : MonoBehaviour
     //一堵墙被撞击事件
     public static event Action OnWallHit;
     
+    // 定义空桶事件
+    public static event Action OnBucketEmpty;
+    
     //游戏结束事件
     public static event Action OnGameOver;
     
@@ -153,7 +156,7 @@ public class EventManager : MonoBehaviour
     {
         Debug.Log("Car is out of gas");
         OnCarOutOfGas?.Invoke();
-        OnEventTriggered?.Invoke("Car is out of gas.");
+        OnEventTriggered?.Invoke("Car is out of gas. Get Bucket.[Space]");
     }
 
     public static void InvokeOnCarTooHeavy()
@@ -188,6 +191,13 @@ public class EventManager : MonoBehaviour
         Debug.Log("Player is attacked");
         OnPlayerAttacked?.Invoke(damage);
         OnLogTriggered?.Invoke("Player is attacked.");
+    }
+    
+    public static void InvokeOnEmptyBucket()
+    {
+        Debug.Log("Bucket is empty");
+        OnBucketEmpty?.Invoke();
+        OnEventTriggered?.Invoke("Bucket is empty. Go to Gas Station to refill[E]");
     }
 
 
@@ -340,6 +350,7 @@ public class EventManager : MonoBehaviour
             //返回最近的桶
             return nearestBucket;
         }
+        
         
         void InvokeNearGasStation()
         {
