@@ -31,6 +31,12 @@ public class PlayerMovement : MonoBehaviour
     
     //获取空桶的Prefab
     public GameObject emptyBucketPrefab;
+    
+    public Sprite playerSpriteUp;     // 玩家向上移动的贴图
+    public Sprite playerSpriteDown;   // 玩家向下移动的贴图
+    public Sprite playerSpriteLeft;   // 玩家向左移动的贴图
+    public Sprite playerSpriteRight;  // 玩家向右移动的贴图
+    public Sprite playerSpriteIdle;   // 玩家静止时的贴图
 
     public float health = 100;
     void onTakeDamage(float damage) 
@@ -81,6 +87,31 @@ public class PlayerMovement : MonoBehaviour
         healthSlider.transform.position = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 0.5f, 0)); // 更新血条的位置,具体而言，就是将世界坐标转换为屏幕坐标，然后加上偏移量，再加上一个向上的偏移量，这样血条就会显示在玩家头顶上方了
         healthSlider.value = health;  // 更新血条
         bucketMass = emptyBucketMass + gasMass;
+        
+        // 获取玩家的SpriteRenderer组件
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+
+// 根据玩家的移动状态来更改贴图
+        switch (currentState)
+        {
+            case MovementState.Up:
+                spriteRenderer.sprite = playerSpriteUp;
+                break;
+            case MovementState.Down:
+                spriteRenderer.sprite = playerSpriteDown;
+                break;
+            case MovementState.Left:
+                spriteRenderer.sprite = playerSpriteLeft;
+                break;
+            case MovementState.Right:
+                spriteRenderer.sprite = playerSpriteRight;
+                break;
+            case MovementState.Idle:
+                spriteRenderer.sprite = playerSpriteIdle;
+                break;
+        }
+
+        
         
         if (isAddingGas == true)
         {
