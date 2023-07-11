@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
 {
     
     public Slider healthSlider;
+    public Vector3 healthSliderOffset; // 滑块相对玩家位置的偏移
     public float speed = 5.0f; // 玩家移动的速度
     public float interactRadius = 1.5f; // 玩家可以与之交互的桶的最大距离
     
@@ -55,7 +56,7 @@ public class PlayerMovement : MonoBehaviour
         // 订阅玩家受伤
         EventManager.OnPlayerAttacked += onTakeDamage;
         
-        healthSlider.maxValue = health;
+        healthSlider.maxValue = 100;
         healthSlider.value = health;
         
     }
@@ -76,6 +77,8 @@ public class PlayerMovement : MonoBehaviour
     // 用于每一帧的更新
     void Update()
     {
+        // 更新血条的位置
+        healthSlider.transform.position = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 0.5f, 0)); // 更新血条的位置,具体而言，就是将世界坐标转换为屏幕坐标，然后加上偏移量，再加上一个向上的偏移量，这样血条就会显示在玩家头顶上方了
         healthSlider.value = health;  // 更新血条
         bucketMass = emptyBucketMass + gasMass;
         
