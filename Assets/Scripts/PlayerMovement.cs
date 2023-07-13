@@ -242,6 +242,25 @@ public class PlayerMovement : MonoBehaviour
             addGasTime = 0f;
         }
         
+        //如果玩家存在，检测离玩家最近的怪物，并且记录距离，传给EventManager里面的InvokeOnMonsterExist(float distance)
+        if (GameObject.FindWithTag("Monster"))
+        {
+            GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
+            float minDistance = 1000f;
+            foreach (GameObject monster in monsters)
+            {
+                float distance = Vector3.Distance(transform.position, monster.transform.position);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                }
+            }
+            EventManager.InvokeOnMonsterExist(minDistance);
+        }
+        else
+        {
+            EventManager.InvokeOnMonsterExist(1000f);
+        }
 
 
         //如果玩家可加油，且玩家按下E键，加油

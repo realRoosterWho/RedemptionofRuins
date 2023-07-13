@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 5919382131177825146}
   m_Layer: 0
   m_Name: Monster
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -31,11 +31,11 @@ Transform:
   m_GameObject: {fileID: 5737148019674890662}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.12, y: -2.81, z: 0}
-  m_LocalScale: {x: 8, y: 8, z: 8}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4086527663147429696
 SpriteRenderer:
@@ -101,9 +101,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bb752efe99a8414f98e3320431855d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.5
+  speed: 1
   attackRange: 1
-  damagePerSecond: 10
+  damagePerSecond: 33.3
 --- !u!50 &7927456595887419575
 Rigidbody2D:
   serializedVersion: 4

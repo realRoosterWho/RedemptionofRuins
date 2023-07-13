@@ -54,6 +54,9 @@ public class EventManager : MonoBehaviour
     
     // 定义日志被触发
     public static event Action<string> OnLogTriggered;
+    
+    // 如果场景中存在怪物事件
+    public static event Action<float> OnMonsterSpawned;
 
 
 
@@ -198,6 +201,13 @@ public class EventManager : MonoBehaviour
         Debug.Log("Bucket is empty");
         OnBucketEmpty?.Invoke();
         OnEventTriggered?.Invoke("Bucket is empty. Go to Gas Station to refill[E]");
+    }
+    
+    //场景中怪物存在事件
+    public static void InvokeOnMonsterExist(float distance)
+    {
+        Debug.Log("Monster exists");
+        OnMonsterSpawned?.Invoke(distance);
     }
 
 

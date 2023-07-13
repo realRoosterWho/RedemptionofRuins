@@ -8,6 +8,7 @@ TagManager:
   - Bucket
   - GasStation
   - Wall
+  - Monster
   layers:
   - Default
   - TransparentFX
