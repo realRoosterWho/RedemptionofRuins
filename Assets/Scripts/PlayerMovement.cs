@@ -224,8 +224,13 @@ public class PlayerMovement : MonoBehaviour
         //保持玩家的物体不旋转
         transform.rotation = Quaternion.identity;
 
-        // 应用移动向量来驱动玩家的移动
-        transform.position += movement * speed * Time.deltaTime;
+        // 确保玩家是处于非静止状态或有输入时才移动
+        if (currentState != MovementState.Idle || moveHorizontal != 0 || moveVertical != 0)
+        {
+            // 移动玩家
+            transform.position += movement * speed * Time.deltaTime;
+        }
+
         
         
         // 如果玩家拥有桶，计时器开始计时
@@ -492,4 +497,15 @@ public class PlayerMovement : MonoBehaviour
         EventManager.OnPlayerDropBucket -= onPlayerDropBucket;
         EventManager.OnPlayerAttacked -= onTakeDamage;
     }
+    
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        // 确定碰撞对象是需要停止移动的对象
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            // 在被撞击后，重设速度为零
+            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        }
+    }
+
 }

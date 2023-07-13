@@ -33,7 +33,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 28
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7730170479240107711
 SpriteRenderer:
@@ -119,7 +119,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0017385781, y: 0.008901909}
+  m_Offset: {x: 0.0021464825, y: 0.010196924}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -130,7 +130,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.1617508, y: 0.36748734}
+  m_Size: {x: 0.7807393, y: 0.8984184}
   m_EdgeRadius: 0
 --- !u!50 &5549495262738568575
 Rigidbody2D:
@@ -171,4 +171,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2405c51a2c6864f45869a0c72db9535f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wallHealth: 400
+  wallHealth: 150
