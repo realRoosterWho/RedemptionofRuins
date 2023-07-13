@@ -113,12 +113,12 @@ TextureImporter:
       name: '!$CarB_Red_0'
       rect:
         serializedVersion: 2
-        x: 32
-        y: 482
-        width: 96
-        height: 154
+        x: 48
+        y: 723
+        width: 144
+        height: 231
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -134,12 +134,12 @@ TextureImporter:
       name: '!$CarB_Red_1'
       rect:
         serializedVersion: 2
-        x: 192
-        y: 482
-        width: 96
-        height: 154
+        x: 288
+        y: 723
+        width: 144
+        height: 231
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -155,12 +155,12 @@ TextureImporter:
       name: '!$CarB_Red_2'
       rect:
         serializedVersion: 2
-        x: 352
-        y: 482
-        width: 96
-        height: 154
+        x: 528
+        y: 723
+        width: 144
+        height: 231
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -177,11 +177,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 162
-        width: 480
-        height: 90
+        y: 243
+        width: 720
+        height: 135
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -197,12 +197,12 @@ TextureImporter:
       name: '!$CarB_Red_5'
       rect:
         serializedVersion: 2
-        x: 32
-        y: 2
-        width: 96
-        height: 158
+        x: 48
+        y: 3
+        width: 144
+        height: 237
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -218,12 +218,12 @@ TextureImporter:
       name: '!$CarB_Red_6'
       rect:
         serializedVersion: 2
-        x: 192
-        y: 2
-        width: 96
-        height: 158
+        x: 288
+        y: 3
+        width: 144
+        height: 237
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -239,12 +239,12 @@ TextureImporter:
       name: '!$CarB_Red_7'
       rect:
         serializedVersion: 2
-        x: 352
-        y: 2
-        width: 96
-        height: 158
+        x: 528
+        y: 3
+        width: 144
+        height: 237
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -257,22 +257,22 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: '!$CarB_Red_8'
+      name: '!$CarB_Red_3'
       rect:
         serializedVersion: 2
         x: 0
-        y: 320
-        width: 158
-        height: 88
+        y: 483
+        width: 240
+        height: 135
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e42a350ff228cb44890e7aaae29a8803
-      internalID: 2048353751
+      spriteID: f156cf60050326a44b089f5dab565fec
+      internalID: -282980601
       vertices: []
       indices: 
       edges: []
@@ -296,7 +296,6 @@ TextureImporter:
       '!$CarB_Red_5': -160331496
       '!$CarB_Red_6': -525419057
       '!$CarB_Red_7': -1398682114
-      '!$CarB_Red_8': 2048353751
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

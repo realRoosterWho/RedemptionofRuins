@@ -13,7 +13,7 @@ public class GameOverSceneController : MonoBehaviour
         // 添加按钮事件
         replayButton.onClick.AddListener(ReplayGame);
         mainMenuButton.onClick.AddListener(GoToMainMenu);
-        string previousSceneName = null; 
+        previousSceneName = null; 
         Debug.Log("Previous Scene Name: " + previousSceneName);
         
         //不按按钮三秒后Replay

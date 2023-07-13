@@ -1,30 +1,24 @@
 using UnityEngine;
-using UnityEngine.SceneManagement; // 需要这个命名空间来加载场景
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class ButtonHandler : MonoBehaviour
 {
+    public Button[] levelButtons; // 关卡按钮数组
+
     void Start()
     {
-        LoadLevel();
+        // 为每个关卡按钮添加点击事件监听器
+        for (int i = 0; i < levelButtons.Length; i++)
+        {
+            int levelIndex = i + 1;
+            levelButtons[i].onClick.AddListener(() => SelectLevel(levelIndex));
+        }
     }
     
-    private void LoadLevel()
+    void SelectLevel(int levelIndex)
     {
-        //上次退出游戏时保存的游戏关卡ID，如果第一次进入默认为1
-        int levelId = PlayerPrefs.GetInt("level", 1);
-        //向所有子物体上的LevelItem脚本中的Init方法传值
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            if (i + 1 > levelId)
-            {
-                //没通关的关卡
-                transform.GetChild(i).GetComponent<LevelItem>().Init(i + 1, true);
-            }
-            else
-            { 
-                //通关的关卡
-                transform.GetChild(i).GetComponent<LevelItem>().Init(i + 1, false);
-            }
-        }
+        // 根据关卡索引加载对应的场景
+        SceneManager.LoadScene("Level_" + levelIndex);
     }
 }

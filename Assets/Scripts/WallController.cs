@@ -24,8 +24,12 @@ public class WallController : MonoBehaviour
     {
         var momentum = collision.relativeVelocity.magnitude * collision.rigidbody.mass;
         wallHealth -= momentum;
-        // 触发InvokeOnWallHit
-        EventManager.InvokeOnWallHit();
+        
+        // 如果碰撞的物体的tag是"Car"，那么触发InvokeOnWallHit
+        if (!collision.gameObject.CompareTag("Player"))
+        {
+            EventManager.InvokeOnWallHit();
+        }
 
         // 设置颜色为红色，并开始协程将颜色在0.3秒后恢复为白色
         wallSpriteRenderer.color = Color.red;

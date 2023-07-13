@@ -57,6 +57,24 @@ public class EventManager : MonoBehaviour
     
     // 如果场景中存在怪物事件
     public static event Action<float> OnMonsterSpawned;
+    
+    //定义插入事件
+    public static event Action OnPullIn;
+    
+    //定义拔出事件
+    public static event Action OnPullOut;
+    
+    //定义错误事件
+    public static event Action OnError;
+    
+    //定义正确事件
+    public static event Action OnCorrect;
+    
+    //定义玩家在加油事件
+    public static event Action OnPlayerAddingGas; 
+    
+    //定义玩家停止加油事件
+    public static event Action OnPlayerStopAddingGas;
 
 
 
@@ -155,17 +173,31 @@ public class EventManager : MonoBehaviour
 
     }
 
+    public static void InvokeOnEventTriggered(string info)
+    {
+        OnEventTriggered?.Invoke(info);
+    }
+    
+    public static void InvokePlayerNearGasStation()
+    {
+        Debug.Log("Player is near the gas station");
+        OnPlayerNearGasStation?.Invoke();
+        OnEventTriggered?.Invoke("Press [E] to add gas.");
+    }
+
     public static void InvokeOnCarOutOfGas()
     {
         Debug.Log("Car is out of gas");
         OnCarOutOfGas?.Invoke();
-        OnEventTriggered?.Invoke("Car is out of gas. Get Bucket.[Space]");
+        InvokeOnError();
+        OnEventTriggered?.Invoke("Car is out of gas. Go Get Bucket.[Space]");
     }
 
     public static void InvokeOnCarTooHeavy()
     {
         Debug.Log("Car is too heavy");
         OnCarTooHeavy?.Invoke();
+        InvokeOnError();
         OnEventTriggered?.Invoke("Car is too heavy.");
     }
     
@@ -208,6 +240,32 @@ public class EventManager : MonoBehaviour
     {
         Debug.Log("Monster exists");
         OnMonsterSpawned?.Invoke(distance);
+    }
+
+    public static void InvokeOnPullIn()
+    {
+        Debug.Log("Pull in");
+        OnPullIn?.Invoke();
+        OnLogTriggered?.Invoke("Pull in.");
+    }
+    
+    public static void InvokeOnPullOut()
+    {
+        Debug.Log("Pull out");
+        OnPullOut?.Invoke();
+        OnLogTriggered?.Invoke("Pull out.");
+    }
+    
+    public static void InvokeOnError()
+    {
+        Debug.Log("Error");
+        OnError?.Invoke(); 
+    }
+    
+    public static void InvokeOnCorrect()
+    {
+        Debug.Log("Correct");
+        OnCorrect?.Invoke();
     }
 
 
@@ -370,6 +428,13 @@ public class EventManager : MonoBehaviour
         public static void InvokeAddingGas()
         {
             OnLogTriggered?.Invoke("Adding gas.");
+            OnEventTriggered?.Invoke("Press [E] to pull out.");
+            OnPlayerAddingGas?.Invoke();
+        }
+        
+        public static void InvokePlayerStopAddingGas()
+        {
+            OnPlayerStopAddingGas?.Invoke();
         }
 
 

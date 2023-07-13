@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class AudioController : MonoBehaviour
 {
@@ -13,6 +14,15 @@ public class AudioController : MonoBehaviour
         EventManager.OnPlayerEnterCar += PlayAudio3;
         EventManager.OnPlayerExitCar += PlayAudio4;
         EventManager.OnMonsterSpawned += PlayAudio5;
+        EventManager.OnPullIn += PlayAudio6;
+        EventManager.OnPullOut += PlayAudio7;
+        EventManager.OnError += PlayAudio8;
+        EventManager.OnPlayerGetBucket += PlayAudio9;
+        EventManager.OnPlayerDropBucket += PlayAudio10;
+        EventManager.OnPlayerNearGasStation += PlayAudio11;
+        EventManager.OnPlayerAddingGas += PlayAudio12;
+        EventManager.OnPlayerStopAddingGas += PlayAudio13;
+        EventManager.OnPlayerAttacked += PlayAudio14;
         // 更多的事件和声音...
     }
 
@@ -39,11 +49,24 @@ public class AudioController : MonoBehaviour
     // 播放第三段音频
     public void PlayAudio3()
     {
-        //如果第二段音频不为空，那么停止播放；如果为空，那么不做任何事情
+        // 如果第二段音频不为空，那么停止播放；如果为空，那么不做任何事情
         if (audioSources[2] != null)
         {
-            audioSources[2].Play();
+            // 延时半秒钟后再播放
+            StartCoroutine(PlayDelayedAudio(audioSources[2], 0.5f));
         }
+
+        // 播放audio[5]
+        if (audioSources[5] != null)
+        {
+            audioSources[5].Play();
+        }
+    }
+
+    private IEnumerator PlayDelayedAudio(AudioSource audioSource, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        audioSource.Play();
     }
     
     // 停止播放第三段音频
@@ -57,6 +80,12 @@ public class AudioController : MonoBehaviour
             {
                 audioSources[2].Stop();
             }
+        }
+        
+        //Play Audio4
+        if (audioSources[4] != null)
+        {
+            audioSources[4].Play();
         }
 
     }
@@ -112,6 +141,100 @@ public class AudioController : MonoBehaviour
 
     }
     
+    public void PlayAudio6()
+    {
+    //如果第二段音频不为空，那么停止播放；如果为空，那么不做任何事情
+        if (audioSources[6] != null && !audioSources[6].isPlaying)
+        {
+            audioSources[6].Play();
+        }
+
+    }
+    
+    public void PlayAudio7()
+    {
+        //如果第二段音频不为空，那么停止播放；如果为空，那么不做任何事情
+        if (audioSources[7] != null && !audioSources[7].isPlaying)
+        {
+            StartCoroutine(PlayDelayedAudio(audioSources[7], 0.5f));
+        }
+
+    }
+    
+    public void PlayAudio8()
+    {
+        //如果第二段音频不为空，那么停止播放；如果为空，那么不做任何事情
+        if (audioSources[8] != null && !audioSources[8].isPlaying)
+        {
+            audioSources[8].Play();
+        }
+
+    }
+    
+    public void PlayAudio9()
+    {
+        //如果第二段音频不为空，那么停止播放；如果为空，那么不做任何事情
+        if (audioSources[11] != null && !audioSources[11].isPlaying)
+        {
+            audioSources[11].Play();
+        }
+
+    }
+    
+    public void PlayAudio10()
+    {
+        //如果第二段音频不为空，那么停止播放；如果为空，那么不做任何事情
+        if (audioSources[12] != null && !audioSources[12].isPlaying)
+        {
+            audioSources[12].Play();
+        }
+
+    }
+    
+    public void PlayAudio11()
+    {
+        //如果第二段音频不为空，那么停止播放；如果为空，那么不做任何事情
+        if (audioSources[9] != null && !audioSources[9].isPlaying)
+        {
+            audioSources[9].Play();
+        }
+
+    }
+    
+    public void PlayAudio12()
+    {
+        //如果第二段音频不为空，那么停止播放；如果为空，那么不做任何事情
+        if (audioSources[13] != null && !audioSources[13].isPlaying)
+        {
+            StartCoroutine(PlayDelayedAudio(audioSources[13], 0.5f));
+        }
+
+    }
+    
+    public void PlayAudio13()
+    {
+        //如果第二段音频不为空，那么停止播放；如果为空，那么不做任何事情
+        
+        //如果音频为空，那么不做任何事情
+        if (audioSources[13] != null)
+        {
+            //如果音频不在播放，那么播放；如果在播放，什么都不做
+            if (audioSources[13].isPlaying)
+            {
+                audioSources[13].Stop();
+            }
+        }
+    }
+    
+    public void PlayAudio14(float aaa)
+    {
+        //如果第二段音频不为空，那么停止播放；如果为空，那么不做任何事情
+        
+        if (audioSources[10] != null && !audioSources[10].isPlaying)
+        {
+            audioSources[10].Play();
+        }
+    }
 
     void OnDestroy()
     {

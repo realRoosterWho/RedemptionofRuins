@@ -30,9 +30,16 @@ public class CarMovementController : MonoBehaviour
     public float health = 100;
 
     private Rigidbody2D rb;
+    public float maxGasMass = 15f;
+    public GasBarUI gasBarUI;
+    bool isOutOfGasEventTriggered = false;
 
+
+
+    
     void Start()
     {
+        gasBarUI = GetComponent<GasBarUI>();
         EventManager.OnPlayerEnterCar += onPlayerEnterCar;
         EventManager.OnPlayerExitCar += onPlayerExitCar;
         rb = GetComponent<Rigidbody2D>();
@@ -40,19 +47,35 @@ public class CarMovementController : MonoBehaviour
 
     void FixedUpdate()
     {
+        
+        // 确保 gasMass 不会低于0
+        gasMass = Mathf.Max(gasMass, 0f);
+
         // 如果玩家在车内，那么车的燃料在不断减少
         if (isPlayerInCar == true)
         {
             carGas -= 0.005f;
         }
 
-        // 如果燃料耗尽，那么触发事件
+        //如果燃料耗尽，触发
         if (carGas <= 0)
         {
-            //锁死燃料到0
+            EventManager.InvokeOnEventTriggered("Car is out of gas. Go Get Bucket.[Space]");
+        }
+        
+        // 如果燃料耗尽，那么触发事件
+        if (carGas <= 0 && !isOutOfGasEventTriggered)
+        {
+            // 锁死燃料到0
             carGas = 0;
-            
+    
             EventManager.InvokeOnCarOutOfGas();
+            isOutOfGasEventTriggered = true;
+        }
+
+        if (carGas > 0)
+        {
+            isOutOfGasEventTriggered = false;
         }
         
         // 如果汽车的质量大于等于20，触发OnCarTooHeavy事件

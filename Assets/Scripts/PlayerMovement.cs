@@ -19,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
     public float playerMass = 2f; // 玩家的质量
     public float emptyBucketMass = 0.0f;
     public float gasMass = 0.0f;
+    public float maxGasMass = 10.00f;
     
     // 设置布尔值：玩家是否获得桶
     public bool hasBucket = false;
@@ -39,6 +40,7 @@ public class PlayerMovement : MonoBehaviour
     public Sprite playerSpriteIdle;   // 玩家静止时的贴图
 
     public float health = 100;
+    private Animator _animator;
     void onTakeDamage(float damage) 
     {
         Debug.Log("TakeDamage");
@@ -55,6 +57,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
+        _animator = GetComponent<Animator>();
         // 订阅水桶事件
         EventManager.OnPlayerGetBucket += onPlayerGetBucket;
         // 定义丢桶事件
@@ -80,17 +83,22 @@ public class PlayerMovement : MonoBehaviour
 
     public MovementState currentState; // 当前的移动状态
 
+    private void LateUpdate()
+    {
+        healthSlider.transform.position = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 0.5f, 0)); // 更新血条的位置,具体而言，就是将世界坐标转换为屏幕坐标，然后加上偏移量，再加上一个向上的偏移量，这样血条就会显示在玩家头顶上方了
+        healthSlider.value = health;  // 更新血条
+    }
+
     // 用于每一帧的更新
     void Update()
     {
         // 更新血条的位置
-        healthSlider.transform.position = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 0.5f, 0)); // 更新血条的位置,具体而言，就是将世界坐标转换为屏幕坐标，然后加上偏移量，再加上一个向上的偏移量，这样血条就会显示在玩家头顶上方了
-        healthSlider.value = health;  // 更新血条
+
         bucketMass = emptyBucketMass + gasMass;
         
         // 获取玩家的SpriteRenderer组件
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-
+/*
 // 根据玩家的移动状态来更改贴图
         switch (currentState)
         {
@@ -111,7 +119,7 @@ public class PlayerMovement : MonoBehaviour
                 break;
         }
 
-        
+    */
         
         if (isAddingGas == true)
         {
@@ -158,24 +166,61 @@ public class PlayerMovement : MonoBehaviour
         if (moveHorizontal > 0)
         {
             currentState = MovementState.Right;
+            _animator.SetBool("isRight", true);
+            _animator.SetBool("isLeft", false);
+            _animator.SetBool("isForward", false);
+            _animator.SetBool("isBackward", false);
+            _animator.SetBool("isIdle", false);
         }
         else if (moveHorizontal < 0)
         {
             currentState = MovementState.Left;
+            _animator.SetBool("isLeft", true);
+            _animator.SetBool("isRight", false);
+            _animator.SetBool("isForward", false);
+            _animator.SetBool("isBackward", false);
+            _animator.SetBool("isIdle", false);
         }
         else if (moveVertical > 0)
         {
             currentState = MovementState.Up;
+            _animator.SetBool("isForward", true);
+            _animator.SetBool("isLeft", false);
+            _animator.SetBool("isRight", false);
+            _animator.SetBool("isBackward", false);
+            _animator.SetBool("isIdle", false);
         }
         else if (moveVertical < 0)
         {
             currentState = MovementState.Down;
+            _animator.SetBool("isBackward", true);
+            _animator.SetBool("isLeft", false);
+            _animator.SetBool("isRight", false);
+            _animator.SetBool("isForward", false);
+            _animator.SetBool("isIdle", false);
         }
         else
         {
             currentState = MovementState.Idle;
+            _animator.SetBool("isIdle", true);
+            _animator.SetBool("isLeft", false);
+            _animator.SetBool("isRight", false);
+            _animator.SetBool("isForward", false);
+            _animator.SetBool("isBackward", false);
         }
 
+        
+        //如果玩家状态为空闲，那么玩家的速度为0
+        if (currentState == MovementState.Idle)
+        {
+            speed = 0;
+        }
+        
+        //如果玩家状态为空闲，那么位移锁死
+        if (currentState == MovementState.Idle)
+        {
+            movement = new Vector3(0, 0, 0);
+        }
         //保持玩家的物体不旋转
         transform.rotation = Quaternion.identity;
 
@@ -242,6 +287,12 @@ public class PlayerMovement : MonoBehaviour
             addGasTime = 0f;
         }
         
+        //如果玩家可以加油
+        if (canAddGas && !isAddingGas)
+        {
+            EventManager.InvokePlayerNearGasStation();
+        }
+
         //如果玩家存在，检测离玩家最近的怪物，并且记录距离，传给EventManager里面的InvokeOnMonsterExist(float distance)
         if (GameObject.FindWithTag("Monster"))
         {
@@ -261,33 +312,44 @@ public class PlayerMovement : MonoBehaviour
         {
             EventManager.InvokeOnMonsterExist(1000f);
         }
-
+        
 
         //如果玩家可加油，且玩家按下E键，加油
+        //如果玩家不能加油且玩家按下E键，触发错误提示
+        if (!canAddGas && Input.GetKeyDown(KeyCode.E))
+        {
+            Debug.Log("Player cannot add gas");
+            EventManager.InvokeOnError();
+        }
+        
+        
         //具体而言，每秒钟玩家的Gas的质量都增加，直到再次按下E键退出加油
         if (canAddGas && Input.GetKeyDown(KeyCode.E) && (!isAddingGas))
         {
             Debug.Log("Player is adding gas");
+            EventManager.InvokeOnPullIn();
             isAddingGas = true;
         }
         // 如果玩家加油时间超过0.5秒钟且按下E键，并且处于加油状态，退出加油
         if (addGasTime > 0.5f && Input.GetKeyDown(KeyCode.E) && isAddingGas)
         {
             Debug.Log("Player is not adding gas");
+            EventManager.InvokeOnPullOut();
             isAddingGas = false;
         }
         
         // 如果玩家远离加油站，退出加油状态
-        if (!canAddGas)
+        if (!canAddGas && isAddingGas)
         {
             isAddingGas = false;
+            EventManager.InvokeOnPullOut();
         }
         
         
         // 如果状态是在加油，那么每秒钟玩家的Gas的质量都增加0.2f；但是如果加到上限了，就不能再加了，而且会自动退出加油状态
         if (isAddingGas)
         {
-            if (gasMass < 10.0f)
+            if (gasMass < maxGasMass)
             {
                 //每秒(Time)，增加0.2f
                 gasMass += 0.8f * Time.deltaTime;
@@ -295,9 +357,16 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                gasMass = 10.0f;
+                gasMass = maxGasMass;
+                EventManager.InvokeOnPullOut();
                 isAddingGas = false;
             }
+        }
+
+        // 如果玩家不在加油，那么触发事件
+        if (!isAddingGas)
+        {
+            EventManager.InvokePlayerStopAddingGas();
         }
         
         
@@ -350,15 +419,13 @@ public class PlayerMovement : MonoBehaviour
         // 对最近的桶进行操作
         Debug.Log("The closest bucket is " + closestBucket.name);
         
-        // 记录最近的桶的bucketMass以及gasMass和emptyMass
+        // 记录最近的桶的bucketMass以及gasMass和emptyMass以及maxgasMass
         BucketStatus bucketStatus = closestBucket.GetComponent<BucketStatus>();
         this.bucketMass = bucketStatus.bucketMass;
         this.emptyBucketMass = bucketStatus.emptyBucketMass;
         this.gasMass = bucketStatus.gasMass;
         
         Debug.Log("The mass of the closest bucket is " + bucketMass);
-        
-        
         
         // 摧毁最近的桶
         Destroy(closestBucket.gameObject);
